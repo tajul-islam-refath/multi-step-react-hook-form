@@ -1,77 +1,82 @@
+import { useForm } from "react-hook-form";
+import FormField from "./FormField ";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserSchema } from "../validations/userFormSchema";
+
 const UserForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm({
+    resolver: zodResolver(UserSchema),
+  });
+
+  const onSubmit = async (data) => {
+    console.log("SUCCESS", data);
+  };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-      <div className="md:col-span-6">
-        <label
-          htmlFor="firstName"
-          className="text-gray-500 font-sans font-medium text-sm md:text-lg">
-          First Name*
-        </label>
-        <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          placeholder="Enter first name"
-          className="block w-full p-2 rounded outline-none focus:border focus:border-green-400"
-        />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="md:col-span-6">
+          <FormField
+            label="First Name*"
+            type="text"
+            placeholder="Enter first name"
+            name="firstName"
+            register={register}
+            error={errors.firstName}
+          />
+        </div>
+        <div className="md:col-span-6">
+          <FormField
+            label="Last Name*"
+            type="text"
+            placeholder="Enter last name"
+            name="lastName"
+            register={register}
+            error={errors.lastName}
+          />
+        </div>
+        <div className="md:col-span-6">
+          <FormField
+            label="Email*"
+            type="email"
+            placeholder="example@gmail.com"
+            name="email"
+            register={register}
+            error={errors.email}
+          />
+        </div>
+        <div className="md:col-span-6">
+          <FormField
+            label="Mobile*"
+            type="tel"
+            placeholder="01xxxxxxxxx"
+            name="mobile"
+            register={register}
+            error={errors.mobile}
+          />
+        </div>
+        <div className="md:col-span-6">
+          <FormField
+            label="Address (Optional)"
+            type="text"
+            placeholder="Enter address"
+            name="address"
+            register={register}
+            error={errors.address}
+          />
+        </div>
       </div>
-      <div className="md:col-span-6">
-        <label
-          htmlFor="lastName"
-          className="text-gray-500 font-sans font-medium text-sm md:text-lg">
-          Last Name*
-        </label>
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          placeholder="Enter last name"
-          className="block w-full p-2 rounded outline-none focus:border focus:border-green-400"
-        />
-      </div>
-      <div className="md:col-span-6">
-        <label
-          htmlFor="email"
-          className="text-gray-500 font-sans font-medium text-sm md:text-lg">
-          Email*
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="example@gmail.com"
-          className="block w-full p-2 rounded outline-none focus:border focus:border-green-400"
-        />
-      </div>
-      <div className="md:col-span-6">
-        <label
-          htmlFor="mobile"
-          className="text-gray-500 font-sans font-medium text-sm md:text-lg">
-          Mobile*
-        </label>
-        <input
-          type="tel"
-          name="mobile"
-          id="mobile"
-          placeholder="+880xxxxxxxxx"
-          className="block w-full p-2 rounded outline-none focus:border focus:border-green-400"
-        />
-      </div>
-      <div className="md:col-span-6">
-        <label
-          htmlFor="address"
-          className="text-gray-500 font-sans font-medium text-sm md:text-lg">
-          Address <span className="text-gray-400">(Optional)</span>
-        </label>
-        <input
-          type="text"
-          name="address"
-          id="address"
-          placeholder="Enter address"
-          className="block w-full p-2 rounded outline-none focus:border focus:border-green-400"
-        />
-      </div>
-    </div>
+      <button
+        type="submit"
+        className="py-2 px-4 mt-2 bg-green-500 text-white uppercase rounded hover:bg-green-400">
+        Save
+      </button>
+    </form>
   );
 };
 

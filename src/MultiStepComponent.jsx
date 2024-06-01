@@ -44,7 +44,7 @@ function MultiStepComponent({ steppers = [] }) {
       marginLeft: stepRef.current[0].offsetWidth / 2,
       marginRight: stepRef.current[steppers.length - 1].offsetWidth / 2,
     });
-    console.dir(stepRef.current[0]);
+
     return () => {};
   }, [stepRef]);
 
