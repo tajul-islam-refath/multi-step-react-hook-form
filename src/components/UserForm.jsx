@@ -1,7 +1,9 @@
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import FormField from "./FormField ";
 import { zodResolver } from "@hookform/resolvers/zod";
+import FormField from "./FormField ";
 import { UserSchema } from "../validations/userFormSchema";
+import { FormContext } from "../context/FormContext";
 
 const UserForm = () => {
   const {
@@ -9,13 +11,23 @@ const UserForm = () => {
     handleSubmit,
     formState: { errors },
     setError,
+    reset,
   } = useForm({
     resolver: zodResolver(UserSchema),
   });
 
+  const { form, setForm } = useContext(FormContext);
+
   const onSubmit = async (data) => {
     console.log("SUCCESS", data);
+    setForm((prevState) => ({ ...prevState, user: data }));
   };
+
+  useEffect(() => {
+    reset({
+      ...form.user,
+    });
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -67,7 +79,6 @@ const UserForm = () => {
             placeholder="Enter address"
             name="address"
             register={register}
-            error={errors.address}
           />
         </div>
       </div>

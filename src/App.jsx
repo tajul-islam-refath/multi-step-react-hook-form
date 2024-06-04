@@ -2,6 +2,7 @@ import MultiStepComponent from "./MultiStepComponent";
 import EducationForm from "./components/EducationForm";
 import PersonalForm from "./components/PersonalForm";
 import UserForm from "./components/UserForm";
+import { FormContextProvider } from "./context/FormContext";
 
 const steppers = [
   {
@@ -24,12 +25,15 @@ const steppers = [
 
 function App() {
   return (
-    <div className="container m-auto py-14">
-      <h1 className="text-3xl font-bold ">
-        Multi Step <span className="text-green-400">Form</span>
-      </h1>
-      <MultiStepComponent steppers={steppers} />
-    </div>
+    <FormContextProvider>
+      <div className="container m-auto py-14">
+        <h1 className="text-3xl font-bold ">
+          Multi Step <span className="text-green-400">Form</span>
+        </h1>
+
+        <MultiStepComponent steppers={steppers} />
+      </div>
+    </FormContextProvider>
   );
 }
 

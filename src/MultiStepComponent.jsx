@@ -1,8 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
+import { FormContext } from "./context/FormContext";
 
 function MultiStepComponent({ steppers = [] }) {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [completed, setCompleted] = useState(false);
+  const { formStep, setFormStep, setCompleted, completed } =
+    useContext(FormContext);
+
   const [margin, setMargin] = useState({
     marginLeft: 0,
     marginRight: 0,
@@ -10,29 +12,8 @@ function MultiStepComponent({ steppers = [] }) {
 
   const stepRef = useRef([]);
 
-  const nextStep = () => {
-    setCurrentStep((prev) => {
-      if (prev == steppers.length) {
-        setCompleted(true);
-        return prev;
-      } else {
-        return prev + 1;
-      }
-    });
-  };
-
-  const prevStep = () => {
-    setCurrentStep((prev) => {
-      if (prev == 1) {
-        return prev;
-      } else {
-        return prev - 1;
-      }
-    });
-  };
-
   const calculateWith = () => {
-    return parseInt(((currentStep - 1) / (steppers.length - 1)) * 100);
+    return parseInt(((formStep - 1) / (steppers.length - 1)) * 100);
   };
 
   const calculateProgressBarWith = () => {
@@ -48,7 +29,28 @@ function MultiStepComponent({ steppers = [] }) {
     return () => {};
   }, [stepRef]);
 
-  const ActiveCmponent = steppers[currentStep - 1].Component;
+  const nextStep = () => {
+    setFormStep((prev) => {
+      if (prev == steppers.length) {
+        setCompleted(true);
+        return prev;
+      } else {
+        return prev + 1;
+      }
+    });
+  };
+
+  const prevStep = () => {
+    setFormStep((prev) => {
+      if (prev == 1) {
+        return prev;
+      } else {
+        return prev - 1;
+      }
+    });
+  };
+
+  const ActiveCmponent = steppers[formStep - 1].Component;
 
   return (
     <div className="w-full h-screen py-4 mt-6 relative">
@@ -60,17 +62,17 @@ function MultiStepComponent({ steppers = [] }) {
             ref={(el) => (stepRef.current[i] = el)}>
             <div
               className={`w-[30px] h-[30px]  text-white flex justify-center items-center rounded-full z-10 ${
-                i + 1 < currentStep || completed
+                i + 1 < formStep || completed
                   ? "bg-green-600"
-                  : i + 1 == currentStep
+                  : i + 1 == formStep
                   ? "bg-blue-600"
                   : "bg-slate-400"
               }`}>
-              {currentStep > i + 1 || completed ? <span>&#10003;</span> : i + 1}
+              {formStep > i + 1 || completed ? <span>&#10003;</span> : i + 1}
             </div>
             <div
               className={`uppercase font-bold ${
-                i + 1 < currentStep || completed ? "text-green-500" : ""
+                i + 1 < formStep || completed ? "text-green-500" : ""
               }`}>
               {step.name}
             </div>
