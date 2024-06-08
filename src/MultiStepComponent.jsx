@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { FormContext } from "./context/FormContext";
 
 function MultiStepComponent({ steppers = [] }) {
-  const { formStep, setFormStep, setCompleted, completed } =
+  const { formStep, setFormStep, setCompleted, completed, onSubmit } =
     useContext(FormContext);
 
   const [margin, setMargin] = useState({
@@ -96,16 +96,28 @@ function MultiStepComponent({ steppers = [] }) {
         <ActiveCmponent />
       </div>
       <div className=" flex justify-center items-center gap-4">
-        <button
-          className="bg-green-400 py-1 px-4 mt-8 rounded text-white "
-          onClick={prevStep}>
-          Prev
-        </button>
-        <button
-          className="bg-green-400 py-1 px-4 mt-8 rounded text-white "
-          onClick={nextStep}>
-          Next
-        </button>
+        {formStep != 1 && (
+          <button
+            className="bg-green-400 py-1 px-4 mt-8 rounded text-white "
+            onClick={prevStep}>
+            Prev
+          </button>
+        )}
+
+        {formStep != steppers.length && (
+          <button
+            className="bg-green-400 py-1 px-4 mt-8 rounded text-white "
+            onClick={nextStep}>
+            Next
+          </button>
+        )}
+        {formStep == steppers.length && (
+          <button
+            className="bg-green-400 py-1 px-4 mt-8 rounded text-white "
+            onClick={() => onSubmit()}>
+            Submit
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,36 +1,16 @@
-import { useContext, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useContext } from "react";
 import FormField from "./FormField ";
-import { UserSchema } from "../validations/userFormSchema";
 import { FormContext } from "../context/FormContext";
 
 const UserForm = () => {
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-    reset,
-  } = useForm({
-    resolver: zodResolver(UserSchema),
-  });
-
-  const { form, setForm } = useContext(FormContext);
-
-  const onSubmit = async (data) => {
-    console.log("SUCCESS", data);
-    setForm((prevState) => ({ ...prevState, user: data }));
-  };
-
-  useEffect(() => {
-    reset({
-      ...form.user,
-    });
-  }, []);
+    form,
+    userFormRegister: register,
+    userFormErrors: errors,
+  } = useContext(FormContext);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         <div className="md:col-span-6">
           <FormField
@@ -82,11 +62,6 @@ const UserForm = () => {
           />
         </div>
       </div>
-      <button
-        type="submit"
-        className="py-2 px-4 mt-2 bg-green-500 text-white uppercase rounded hover:bg-green-400">
-        Save
-      </button>
     </form>
   );
 };

@@ -1,5 +1,6 @@
 import MultiStepComponent from "./MultiStepComponent";
 import EducationForm from "./components/EducationForm";
+import FilesForm from "./components/FilesForm";
 import PersonalForm from "./components/PersonalForm";
 import UserForm from "./components/UserForm";
 import { FormContextProvider } from "./context/FormContext";
@@ -19,7 +20,7 @@ const steppers = [
   },
   {
     name: "Photograph",
-    Component: () => <h1>Delivered Component</h1>,
+    Component: () => <FilesForm />,
   },
 ];
 
